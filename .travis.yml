@@ -1,15 +1,20 @@
 sudo: false
 language: java
+jdk:
+  - oraclejdk8
 os: linux
-install:
-- wget https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-sdk-112.0.0-linux-x86_64.tar.gz
-- tar -xzvf google-cloud-sdk-112.0.0-linux-x86_64.tar.gz
-- PATH=./google-cloud-sdk/bin:$PATH
-- gcloud auth activate-service-account --key-file travis-app-maven-plugin-6cf410ac070f.json
-script:
-- gcloud projects list
-#- gcloud preview app instances list --quiet
 before_install:
-- openssl aes-256-cbc -K $encrypted_2eaf8826df7c_key -iv $encrypted_2eaf8826df7c_iv
-  -in travis-app-maven-plugin-6cf410ac070f.json.enc -out travis-app-maven-plugin-6cf410ac070f.json
-  -d
+  - openssl aes-256-cbc -K $encrypted_2eaf8826df7c_key -iv $encrypted_2eaf8826df7c_iv
+    -in travis-app-maven-plugin-6cf410ac070f.json.enc -out travis-app-maven-plugin-6cf410ac070f.json
+    -d
+install:
+  - wget https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-sdk-112.0.0-linux-x86_64.tar.gz
+  - tar -xzvf google-cloud-sdk-112.0.0-linux-x86_64.tar.gz
+  - PATH=./google-cloud-sdk/bin:$PATH
+  - gcloud components install app-engine-java --quiet
+  - gcloud auth activate-service-account --key-file travis-app-maven-plugin-6cf410ac070f.json
+script:
+  - git clone https://github.com/loosebazooka/simple-spring-boot-appengine-app.git
+  - cd simple-spring-boot-appengine-app
+  - mvn clean gcp-app:deploy
+#- gcloud preview app instances list --quiet
