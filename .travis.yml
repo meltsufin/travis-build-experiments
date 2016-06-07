@@ -4,7 +4,7 @@ os: linux
 install:
   - wget https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-sdk-112.0.0-linux-x86_64.tar.gz
   - tar -xzvf google-cloud-sdk-112.0.0-linux-x86_64.tar.gz
-  - echo "N" | ./google-cloud-sdk/install.sh
+  - PATH=./google-cloud-sdk:$PATH
 script:
   - echo test
   - gcloud help
