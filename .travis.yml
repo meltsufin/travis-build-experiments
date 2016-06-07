@@ -23,4 +23,5 @@ script:
   - cd simple-spring-boot-appengine-app
   - rm -rf $HOME/.m2/repository/com/google/cloud
   - mvn clean gcp-app:deploy
+  - curl https://travis-app-maven-plugin.appspot.com/ | grep 'Greetings from Spring Boot!'
 #- gcloud preview app instances list --quiet
