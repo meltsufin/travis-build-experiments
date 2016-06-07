@@ -13,6 +13,7 @@ install:
   - export PATH=$PWD/google-cloud-sdk/bin:$PATH
   - gcloud components install app-engine-java --quiet
   - gcloud auth activate-service-account --key-file travis-app-maven-plugin-6cf410ac070f.json
+  - gcloud config set project travis-app-maven-plugin
 script:
   - git clone https://github.com/loosebazooka/simple-spring-boot-appengine-app.git
   - cd simple-spring-boot-appengine-app
