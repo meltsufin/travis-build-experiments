@@ -1,1 +1,6 @@
-script: "echo test"
+sude: false
+language: java
+script: "
+echo test;
+gcloud help;
+"
