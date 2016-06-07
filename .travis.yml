@@ -22,5 +22,5 @@ script:
   - git clone https://github.com/loosebazooka/simple-spring-boot-appengine-app.git
   - cd simple-spring-boot-appengine-app
   - rm -rf $HOME/.m2/repository/com/google/cloud
-  - mvn clean gcp-app:deploy
+  - mvn clean gcp-app:deploy -Dapp.deploy.version=default
 #- gcloud preview app instances list --quiet
