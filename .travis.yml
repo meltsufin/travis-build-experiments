@@ -5,9 +5,8 @@ install:
 - wget https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-sdk-112.0.0-linux-x86_64.tar.gz
 - tar -xzvf google-cloud-sdk-112.0.0-linux-x86_64.tar.gz
 - PATH=./google-cloud-sdk/bin:$PATH
-- echo "Y" | gcloud init --console-only
-script:
 - gcloud auth active-service-account --key-file travis-app-maven-plugin-6cf410ac070f.json
+script:
 - gcloud preview app instances list --quiet
 before_install:
 - openssl aes-256-cbc -K $encrypted_2eaf8826df7c_key -iv $encrypted_2eaf8826df7c_iv
