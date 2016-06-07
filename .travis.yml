@@ -6,5 +6,4 @@ install:
   - tar -xzvf google-cloud-sdk-112.0.0-linux-x86_64.tar.gz
   - PATH=./google-cloud-sdk/bin:$PATH
 script:
-  - echo test
-  - gcloud help
+  - gcloud deploy --quiet
