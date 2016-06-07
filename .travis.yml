@@ -1,6 +1,9 @@
-sude: false
+sudo: false
 language: java
-script: "
-echo test;
-gcloud help;
-"
+os: linux
+install:
+  - wget https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-sdk-112.0.0-linux-x86_64.tar.gz
+  - tar -xzvf google-cloud-sdk-112.0.0-linux-x86_64.tar.gz
+script:
+  - echo test
+  - gcloud help
