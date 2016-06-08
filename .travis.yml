@@ -32,6 +32,6 @@ script:
   # deploy using the plugin
   - mvn clean gcp-app:deploy
   # verify app deployed
-  - curl https://travis-app-maven-plugin.appspot.com/ | grep 'Greetings from Spring Boot!'
+  - curl https://springboot-dot-travis-app-maven-plugin.appspot.com/ | grep 'Greetings from Spring Boot!'
   # cleanup by deleting the whole service
   - gcloud preview app services delete springboot --quiet
