@@ -11,7 +11,7 @@ before_install:
   - openssl aes-256-cbc -K $encrypted_2eaf8826df7c_key -iv $encrypted_2eaf8826df7c_iv
     -in travis-app-maven-plugin-6cf410ac070f.json.enc -out travis-app-maven-plugin-6cf410ac070f.json
     -d
-install:
+before_script:
   - export PATH=$PWD/google-cloud-sdk/bin:$PATH
   - if [ -d "google-cloud-sdk" ];
     then
@@ -33,4 +33,4 @@ script:
   - mvn clean gcp-app:deploy
   - curl https://travis-app-maven-plugin.appspot.com/ | grep 'Greetings from Spring Boot!'
 after_script:
-  - gcloud preview app services delete default
+  - gcloud preview app services delete default --quiet
