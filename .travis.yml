@@ -5,33 +5,33 @@ jdk:
 cache:
   directories:
    - $HOME/.m2  
-   - $HOME/google-cloud-sdk
 os: linux
-before_install:
+install:
+  # download Cloud SDK
+  - wget https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-sdk-112.0.0-linux-x86_64.tar.gz
+  - tar -xzvf google-cloud-sdk-112.0.0-linux-x86_64.tar.gz
+  - export PATH=$PWD/google-cloud-sdk/bin:$PATH
+  # add App Eengine component to Cloud SDK
+  - gcloud components install app-engine-java --quiet
+  # update all Cloud SDK components
+  - gcloud components update --quiet
+  # decrypt the tavis-app-maven-plugin Cloud SDK project service account key
   - openssl aes-256-cbc -K $encrypted_2eaf8826df7c_key -iv $encrypted_2eaf8826df7c_iv
     -in travis-app-maven-plugin-6cf410ac070f.json.enc -out travis-app-maven-plugin-6cf410ac070f.json
     -d
-before_script:
-  - export PATH=$PWD/google-cloud-sdk/bin:$PATH
-  - ls -l
-  - if [ -d "google-cloud-sdk" ];
-    then
-      echo "Google Cloud SDK found";
-    else
-      echo "Downloading Google Cloud SDK..."
-      && wget https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-sdk-112.0.0-linux-x86_64.tar.gz
-      && tar -xzvf google-cloud-sdk-112.0.0-linux-x86_64.tar.gz
-      && gcloud components install app-engine-java --quiet
-      ;
-    fi
-  - gcloud components update --quiet
+  # set Cloud SDK CLI authentication
   - gcloud auth activate-service-account --key-file travis-app-maven-plugin-6cf410ac070f.json
+  # set default project
   - gcloud config set project travis-app-maven-plugin
 script:
+  # download test app
   - git clone https://github.com/loosebazooka/simple-spring-boot-appengine-app.git
   - cd simple-spring-boot-appengine-app
+  # clear Maven cache of com.google.cloud.* dependencies
   - rm -rf $HOME/.m2/repository/com/google/cloud
-  - mvn clean gcp-app:deploy
+  # deploy using the plugin
+  - mvn clean gcp-app:deploy -Dapp.deploy.version=v1
+  # verify app deployed
   - curl https://travis-app-maven-plugin.appspot.com/ | grep 'Greetings from Spring Boot!'
-after_script:
-  - gcloud preview app versions delete `gcloud preview app versions list | awk 'FNR>1{print $2}' ORS=' '` --quiet
+  # cleanup by deleting the deployed version
+  - gcloud preview app versions delete v1 --quiet
