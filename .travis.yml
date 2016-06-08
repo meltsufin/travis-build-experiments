@@ -5,6 +5,7 @@ jdk:
 cache:
   directories:
    - $HOME/.m2  
+   - $HOME/google-cloud-sdk
 os: linux
 before_install:
   - openssl aes-256-cbc -K $encrypted_2eaf8826df7c_key -iv $encrypted_2eaf8826df7c_iv
