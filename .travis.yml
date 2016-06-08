@@ -13,6 +13,7 @@ before_install:
     -d
 before_script:
   - export PATH=$PWD/google-cloud-sdk/bin:$PATH
+  - ls -l
   - if [ -d "google-cloud-sdk" ];
     then
       echo "Google Cloud SDK found";
@@ -33,4 +34,4 @@ script:
   - mvn clean gcp-app:deploy
   - curl https://travis-app-maven-plugin.appspot.com/ | grep 'Greetings from Spring Boot!'
 after_script:
-  - gcloud preview app services delete default --quiet
+  - gcloud preview app versions delete `gcloud preview app versions list | awk 'FNR>1{print $2}' ORS=' '` --quiet
