@@ -34,4 +34,4 @@ script:
   # verify app deployed
   - curl https://travis-app-maven-plugin.appspot.com/ | grep 'Greetings from Spring Boot!'
   # cleanup by deleting the deployed version
-  - gcloud preview app versions delete v1 --quiet
+  - gcloud preview app versions stop v1 --quiet
