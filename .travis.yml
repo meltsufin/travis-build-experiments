@@ -11,10 +11,17 @@ before_install:
     -in travis-app-maven-plugin-6cf410ac070f.json.enc -out travis-app-maven-plugin-6cf410ac070f.json
     -d
 install:
-  - wget https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-sdk-112.0.0-linux-x86_64.tar.gz
-  - tar -xzvf google-cloud-sdk-112.0.0-linux-x86_64.tar.gz
   - export PATH=$PWD/google-cloud-sdk/bin:$PATH
-  - gcloud components install app-engine-java --quiet
+  - "
+if [ -d "google-cloud-sdk" ]
+then echo "Google Cloud SDK found"
+else
+  echo "Downloading Google Cloud SDK..."
+  wget https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-sdk-112.0.0-linux-x86_64.tar.gz
+  tar -xzvf google-cloud-sdk-112.0.0-linux-x86_64.tar.gz
+  gcloud components install app-engine-java --quiet
+fi
+"
   - gcloud components update --quiet
   - gcloud auth activate-service-account --key-file travis-app-maven-plugin-6cf410ac070f.json
   - gcloud config set project travis-app-maven-plugin
