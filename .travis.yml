@@ -29,9 +29,11 @@ script:
   - cd simple-spring-boot-appengine-app
   # clear Maven cache of com.google.cloud.* dependencies
   - rm -rf $HOME/.m2/repository/com/google/cloud
+  # verify app not deployed
+  - curl -I https://springboot-dot-travis-app-maven-plugin.appspot.com/ | grep '^HTTP.*404 Not Found'
   # deploy using the plugin
   - mvn clean gcp-app:deploy
   # verify app deployed
-  - curl https://springboot-dot-travis-app-maven-plugin.appspot.com/ | grep 'Greetings from Spring Boot!'
+  - curl -I https://springboot-dot-travis-app-maven-plugin.appspot.com/ | grep '^HTTP.*200 OK'
   # cleanup by deleting the whole service
   - gcloud preview app services delete springboot --quiet
