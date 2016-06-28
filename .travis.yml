@@ -16,8 +16,9 @@ install:
   # update all Cloud SDK components
   - gcloud components update --quiet
   # decrypt the tavis-app-maven-plugin Cloud SDK project service account key
+  - doRemoteTests = [ ${TRAVIS_PULL_REQUEST} = 'false' ] && [ ${TRAVIS_BRANCH} = 'master' ]
   - |
-    if [ ${TRAVIS_PULL_REQUEST} = 'false' ] && [ ${TRAVIS_BRANCH} = 'master' ]; then
+    if $doRemoteTests; then
       openssl aes-256-cbc -K $encrypted_4c3a51657fee_key -iv $encrypted_4c3a51657fee_iv -in config/travis-app-maven-plugin-e1bb638f290e.json.enc -out config/travis-app-maven-plugin-e1bb638f290e.json -d
       gcloud auth activate-service-account --key-file config/travis-app-maven-plugin-e1bb638f290e.json
       gcloud config set project travis-app-maven-plugin
