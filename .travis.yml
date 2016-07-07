@@ -35,3 +35,13 @@ script:
   - curl -I https://springboot-dot-travis-app-maven-plugin.appspot.com/ | grep '^HTTP.*200 OK'
   # cleanup by deleting the whole service
   - gcloud preview app services delete springboot --quiet
+
+  - cd ..
+  - git clone https://github.com/loosebazooka/simple-appengine-app.git
+  - cd simple-appengine-app
+  - curl -I https://whatever-dot-travis-app-maven-plugin.appspot.com/ | grep '^HTTP.*404 Not Found'
+  - mvn clean appengine:deploy
+  - curl -I https://whatever-dot-travis-app-maven-plugin.appspot.com/ | grep '^HTTP.*200 OK'
+  - gcloud preview app services delete whatever --quiet
+    
+
