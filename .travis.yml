@@ -6,6 +6,7 @@ cache:
   directories:
    - $HOME/.m2  
 os: linux
+
 install:
   # download Cloud SDK
   - wget https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-sdk-112.0.0-linux-x86_64.tar.gz
@@ -16,13 +17,10 @@ install:
   # update all Cloud SDK components
   - gcloud components update --quiet
   # decrypt the tavis-app-maven-plugin Cloud SDK project service account key
-  - set doRemoteTests = [ $TRAVIS_PULL_REQUEST = 'false' ] && [ $TRAVIS_BRANCH = 'master' ]
-  - |
-    if $doRemoteTests; then
-      openssl aes-256-cbc -K $encrypted_f26b6b85e8e8_key -iv $encrypted_f26b6b85e8e8_iv -in travis-app-maven-plugin-f26b6b85e8e8.json.enc -out travis-app-maven-plugin-f26b6b85e8e8.json -d
-      gcloud auth activate-service-account --key-file travis-app-maven-plugin-f26b6b85e8e8.json
-      gcloud config set project travis-app-maven-plugin
-    fi
+  - openssl aes-256-cbc -K $encrypted_f26b6b85e8e8_key -iv $encrypted_f26b6b85e8e8_iv -in travis-app-maven-plugin-f26b6b85e8e8.json.enc -out travis-app-maven-plugin-f26b6b85e8e8.json -d
+  - gcloud auth activate-service-account --key-file travis-app-maven-plugin-f26b6b85e8e8.json
+  - gcloud config set project travis-app-maven-plugin
+
 script:
   # download test app
   - git clone https://github.com/loosebazooka/simple-spring-boot-appengine-app.git
